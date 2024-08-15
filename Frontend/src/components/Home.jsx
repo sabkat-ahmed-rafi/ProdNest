@@ -1,10 +1,14 @@
 import React from 'react';
+import Card from './Card';
+
+
+
 
 const Home = () => {
     return (
-        <div>
-            hello bhaiya
-        </div>
+        <>
+            <Card></Card>
+        </>
     );
 };
 
