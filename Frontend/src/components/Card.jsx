@@ -1,24 +1,33 @@
 import React from 'react';
+import { format } from 'date-fns';
 
-const Card = () => {
+
+const Card = ({ productName, productImage, description, price, category, ratings, brandName, creationDate }) => {
+
+
     return (
         <>
           <section>
-          <div className="card bg-base-100 w-96 shadow-xl">
+          <div className="card bg-base-100 w-72 shadow-xl border border-slate-400">
   <figure>
     <img
-      src="https://img.daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.webp"
+      src={productImage}
       alt="Shoes" />
   </figure>
   <div className="card-body">
     <h2 className="card-title">
-      Shoes!
+      {productName}
       <div className="badge badge-secondary">NEW</div>
     </h2>
-    <p>If a dog chews shoes whose shoes does he choose?</p>
+    <h4>${price}</h4>
+    <p>{description}</p>
     <div className="card-actions justify-end">
-      <div className="badge badge-outline">Fashion</div>
-      <div className="badge badge-outline">Products</div>
+      <div className="badge badge-outline">{category}</div>
+      <div className="badge badge-outline">{brandName}</div>
+    </div>
+    <div>
+        <p>{ratings}⭐</p>
+        <p>{format(new Date(creationDate), "MMMM do, yyyy h:mm:ss a")}</p>
     </div>
   </div>
 </div>

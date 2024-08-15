@@ -9,7 +9,15 @@ import Root from './components/Root';
 import Register from './Authentication/Register/Register';
 import Authentication from './Authentication/Authentication';
 import Login from './Authentication/Login/Login';
-import Home from './components/Home';
+import Home, { axiosSecure } from './components/Home';
+import {
+  QueryClient,
+  QueryClientProvider,
+} from '@tanstack/react-query'
+import {NextUIProvider} from '@nextui-org/react'
+
+
+const queryClient = new QueryClient()
 
 
 const router = createBrowserRouter([
@@ -20,6 +28,10 @@ const router = createBrowserRouter([
       {
         path: "/",
         element: <Home></Home>,
+        loader: async () => {
+          const {data} = await axiosSecure.get("/totalProducts")
+          return data.totalProductsCount
+        }
       }
     ]
   },
@@ -36,8 +48,12 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
+    <QueryClientProvider client={queryClient}>
+    <NextUIProvider>
     <Authentication>
     <RouterProvider router={router} />
     </Authentication>
+    </NextUIProvider>
+    </QueryClientProvider>
   </StrictMode>,
 )
