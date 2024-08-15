@@ -42,7 +42,13 @@ async function run() {
   try {
 
     const database = client.db("ProdNest");
-    const user = database.collection("user");
+    const products = database.collection("products");
+
+
+    app.get("/products", async (req, res) => {
+      const productsList = await products.find().toArray();
+      res.send(productsList);
+    })
 
     
 
