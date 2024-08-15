@@ -17,6 +17,8 @@ const Home = () => {
     const [category, setCategory] = useState('');
     const [brand, setBrand] = useState('');
     const [price, setPrice] = useState('');
+    const [itemPerPage, setItemPerPage] = useState(10);
+    const [currentPage, setCurrentPage] = useState(1);
 
     const totalProductsCount = useLoaderData()
 
@@ -25,15 +27,14 @@ const Home = () => {
 
 
     const  {data: products = []} = useQuery({
-        queryKey: ['products', search, category, brand, price],
+        queryKey: ['products', search, category, brand, price, itemPerPage, currentPage],
         queryFn: async () => {
-            const {data} = await axiosSecure.get(`/products?search=${search}&category=${category}&price=${price}&brand=${brand}`);
+            const {data} = await axiosSecure.get(`/products?search=${search}&category=${category}&price=${price}&brand=${brand}&page=${currentPage}&limit=${itemPerPage}`);
             return data;
         }
     })
     
 
-    console.log(search)
 
     return (
         <>
@@ -111,7 +112,12 @@ const Home = () => {
             </div>
         </section>
         <section className='flex justify-center items-center mt-16'>
-           <Pagination color={"primary"} isCompact showControls total={10} initialPage={1} />
+           <Pagination color={"primary"} isCompact showControls 
+           total={Math.ceil(totalProductsCount/itemPerPage)} 
+           initialPage={1}
+           page={currentPage}
+           onChange={( page ) => setCurrentPage(page)}
+            />
         </section>
         </>
     );
