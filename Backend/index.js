@@ -46,8 +46,30 @@ async function run() {
 
 
     app.get("/products", async (req, res) => {
-      const productsList = await products.find().toArray();
+      const search = req.query.search;
+      const category = req.query.category;
+      const brand = req.query.brand;
+      const price = req.query.price;
+      const page = parseInt(req.query.page) || 0;
+      const limit = parseInt(req.query.limit) || 10;
+
+      const skip = (page - 1) * limit
+
+      
+      const productsList = await products.find().skip(skip).limit(limit).toArray();
       res.send(productsList);
+    })
+
+
+
+
+
+
+
+
+    app.get("/totalProducts", async (req, res) => {
+      const totalProductsCount = await products.countDocuments();
+      res.send({totalProductsCount});
     })
 
     
@@ -55,7 +77,7 @@ async function run() {
     console.log("Pinged your deployment. You successfully connected to MongoDB!");
   } finally {
     // Ensures that the client will close when you finish/error
-    await client.close();
+    // await client.close();
   }
 }
 run().catch(console.dir);
