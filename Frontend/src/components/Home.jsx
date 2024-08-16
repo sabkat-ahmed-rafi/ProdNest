@@ -37,12 +37,14 @@ const Home = () => {
         queryKey: ['products', search, category, brand, price, sort, itemPerPage, currentPage],
         queryFn: async () => {
             const {data} = await axiosSecure.get(`/products?search=${search}&category=${category}&price=${price}&brand=${brand}&sort=${sort}&page=${currentPage}&limit=${itemPerPage}`);
+            console.log(data.length)
             return data;
         }
     })
     
 
     console.log(products)
+    
 
 
 
@@ -57,7 +59,9 @@ const Home = () => {
                    </label>
                 </div>
                 <div className='input-md w-[150px] lg:w-[200px]'>
-                   <select value={category} onChange={e => setCategory(e.target.value)} className="select select-bordered w-full max-w-xs">
+                   <select value={category} onChange={e => {setCategory(e.target.value);
+                    setCurrentPage(1)
+                   }} className="select select-bordered w-full max-w-xs">
                      <option value={''} >Category</option>
                      <option>Mobile</option>
                      <option>Laptop</option>
@@ -75,7 +79,9 @@ const Home = () => {
                    </select>
                 </div>
                 <div className='input-md w-[140px] lg:w-[200px]'>
-                <select value={brand} onChange={e => setBrand(e.target.value)} className="select select-bordered w-full max-w-xs">
+                <select value={brand} onChange={e => {setBrand(e.target.value)
+                    setCurrentPage(1)
+                }} className="select select-bordered w-full max-w-xs">
                      <option value={''} >Brand</option>
                      <option>TechBrand</option>
                      <option>ComputeX</option>
@@ -96,7 +102,9 @@ const Home = () => {
                    </select>
                 </div>
                 <div className='input-md w-[160px] lg:w-[200px]'>
-                <select value={price} onChange={e => setPrice(e.target.value)} className="select select-bordered w-full max-w-xs">
+                <select value={price} onChange={e => {setPrice(e.target.value)
+                    setCurrentPage(1)
+                }} className="select select-bordered w-full max-w-xs">
                      <option value={''} >Price range</option>
                      <option value={'A'}>$0 - $100</option>
                      <option value={'B'}>$100 - $500</option>
@@ -105,7 +113,9 @@ const Home = () => {
                    </select>
                 </div>
                 <div className='input-md w-[140px] lg:w-[200px]'>
-                    <select value={sort} onChange={e => setSort(e.target.value)} className="select select-bordered w-full max-w-xs">
+                    <select value={sort} onChange={e => {setSort(e.target.value)
+                        setCurrentPage(1)
+                    }} className="select select-bordered w-full max-w-xs">
                        <option value={''}>Sort by:</option>
                        <option value="price-low-high">Price: Low to High</option>
                        <option value="price-high-low">Price: High to Low</option>
