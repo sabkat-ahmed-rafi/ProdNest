@@ -57,8 +57,8 @@ const Home = () => {
                    </label>
                 </div>
                 <div className='input-md w-[150px] lg:w-[200px]'>
-                   <select onChange={e => setCategory(e.target.value)} className="select select-bordered w-full max-w-xs">
-                     <option disabled selected>Category</option>
+                   <select value={category} onChange={e => setCategory(e.target.value)} className="select select-bordered w-full max-w-xs">
+                     <option value={''} >Category</option>
                      <option>Mobile</option>
                      <option>Laptop</option>
                      <option>Tablet</option>
@@ -75,8 +75,8 @@ const Home = () => {
                    </select>
                 </div>
                 <div className='input-md w-[140px] lg:w-[200px]'>
-                <select onChange={e => setBrand(e.target.value)} className="select select-bordered w-full max-w-xs">
-                     <option disabled selected>Brand</option>
+                <select value={brand} onChange={e => setBrand(e.target.value)} className="select select-bordered w-full max-w-xs">
+                     <option value={''} >Brand</option>
                      <option>TechBrand</option>
                      <option>ComputeX</option>
                      <option>GigaGame</option>
@@ -96,17 +96,17 @@ const Home = () => {
                    </select>
                 </div>
                 <div className='input-md w-[160px] lg:w-[200px]'>
-                <select onChange={e => setPrice(e.target.value)} className="select select-bordered w-full max-w-xs">
-                     <option value={price} disabled selected>Price range</option>
+                <select value={price} onChange={e => setPrice(e.target.value)} className="select select-bordered w-full max-w-xs">
+                     <option value={''} >Price range</option>
                      <option value={'A'}>$0 - $100</option>
                      <option value={'B'}>$100 - $500</option>
                      <option value={'C'}>$500 - $1000</option>
-                     <option value={'D'}>$1000 - $1500</option>
+                     <option value={'D'}>$1000 - $2000</option>
                    </select>
                 </div>
                 <div className='input-md w-[140px] lg:w-[200px]'>
-                    <select onChange={e => setSort(e.target.value)} className="select select-bordered w-full max-w-xs">
-                       <option value={sort} disabled selected>Sort by:</option>
+                    <select value={sort} onChange={e => setSort(e.target.value)} className="select select-bordered w-full max-w-xs">
+                       <option value={''}>Sort by:</option>
                        <option value="price-low-high">Price: Low to High</option>
                        <option value="price-high-low">Price: High to Low</option>
                        <option value="date-newest">Date Added: Newest First</option>
