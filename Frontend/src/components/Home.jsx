@@ -2,12 +2,7 @@ import React, { useState } from 'react';
 import Card from './Card';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
-
-export const axiosSecure = axios.create({
-    baseURL: import.meta.env.VITE_BACKEND_URL,
-})
 import {Pagination} from "@nextui-org/react";
-import { useLoaderData } from 'react-router-dom';
 
 
 
@@ -20,9 +15,12 @@ const Home = () => {
     const [sort, setSort] = useState('');
     const [itemPerPage, setItemPerPage] = useState(10);
     const [currentPage, setCurrentPage] = useState(1);
+    const [totalProductsCount, setTotalProductsCount] = useState(0);
 
 
-    const totalProductsCount = useLoaderData()
+    // const totalProductsCount = useLoaderData()
+    // console.log(totalProductsCount)
+    
 
     const handleReset = () => {
         setSearch('');
@@ -36,14 +34,15 @@ const Home = () => {
     const  {data: products = []} = useQuery({
         queryKey: ['products', search, category, brand, price, sort, itemPerPage, currentPage],
         queryFn: async () => {
-            const {data} = await axiosSecure.get(`/products?search=${search}&category=${category}&price=${price}&brand=${brand}&sort=${sort}&page=${currentPage}&limit=${itemPerPage}`);
-            console.log(data.length)
-            return data;
+            const {data} = await axios.get(`${import.meta.env.VITE_BACKEND_URL}/products?search=${search}&category=${category}&price=${price}&brand=${brand}&sort=${sort}&page=${currentPage}&limit=${itemPerPage}`);
+            setTotalProductsCount(data.totalProductsCount)
+            console.log(data.totalProductsCount)
+            return data.productsList;
         }
     })
     
 
-    console.log(products)
+    console.log(import.meta.env.VITE_BACKEND_URL)
     
 
 

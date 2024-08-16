@@ -9,15 +9,18 @@ import Root from './components/Root';
 import Register from './Authentication/Register/Register';
 import Authentication from './Authentication/Authentication';
 import Login from './Authentication/Login/Login';
-import Home, { axiosSecure } from './components/Home';
+import Home from './components/Home';
 import {
   QueryClient,
   QueryClientProvider,
 } from '@tanstack/react-query'
 import {NextUIProvider} from '@nextui-org/react'
+import axios from 'axios';
 
 
 const queryClient = new QueryClient()
+axios.defaults.withCredentials = true;
+
 
 
 const router = createBrowserRouter([
@@ -28,10 +31,6 @@ const router = createBrowserRouter([
       {
         path: "/",
         element: <Home></Home>,
-        loader: async () => {
-          const {data} = await axiosSecure.get("/totalProducts")
-          return data.totalProductsCount
-        }
       }
     ]
   },

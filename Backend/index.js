@@ -14,7 +14,7 @@ app.use(express.json())
 
 app.use(
     cors({
-      origin: ["http://localhost:5173"],
+      origin: "https://frontend-one-ruddy-21.vercel.app",
       methods: "GET,PUT,PATCH,POST,DELETE",
       credentials: true,
     })
@@ -110,28 +110,29 @@ async function run() {
             sortQuery.price = -1; 
             break;
           case "date-newest":
-            sortQuery.date = -1; 
+            sortQuery.creationDate = -1; 
             break;
           default:
             break;
         }
       }
       
-      const productsList = await products.find(query).sort(sortQuery).skip(skip).limit(limit).toArray();
-      res.send(productsList);
-    })
-
-
-
-
-
-
-
-
-    app.get("/totalProducts", async (req, res) => {
       const totalProductsCount = await products.countDocuments();
-      res.send({totalProductsCount});
+
+      const productsList = await products.find(query).sort(sortQuery).skip(skip).limit(limit).toArray();
+      console.log(productsList, totalProductsCount)
+      res.send({productsList, totalProductsCount});
+
     })
+
+
+
+
+
+
+
+
+
 
     
 
