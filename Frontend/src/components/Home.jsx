@@ -17,23 +17,33 @@ const Home = () => {
     const [category, setCategory] = useState('');
     const [brand, setBrand] = useState('');
     const [price, setPrice] = useState('');
+    const [sort, setSort] = useState('');
     const [itemPerPage, setItemPerPage] = useState(10);
     const [currentPage, setCurrentPage] = useState(1);
 
+
     const totalProductsCount = useLoaderData()
 
-    console.log(totalProductsCount)
-
+    const handleReset = () => {
+        setSearch('');
+        setCategory('');
+        setBrand('');
+        setPrice('');
+        setSort('');
+    }
 
 
     const  {data: products = []} = useQuery({
-        queryKey: ['products', search, category, brand, price, itemPerPage, currentPage],
+        queryKey: ['products', search, category, brand, price, sort, itemPerPage, currentPage],
         queryFn: async () => {
-            const {data} = await axiosSecure.get(`/products?search=${search}&category=${category}&price=${price}&brand=${brand}&page=${currentPage}&limit=${itemPerPage}`);
+            const {data} = await axiosSecure.get(`/products?search=${search}&category=${category}&price=${price}&brand=${brand}&sort=${sort}&page=${currentPage}&limit=${itemPerPage}`);
             return data;
         }
     })
     
+
+    console.log(products)
+
 
 
     return (
@@ -95,12 +105,15 @@ const Home = () => {
                    </select>
                 </div>
                 <div className='input-md w-[140px] lg:w-[200px]'>
-                    <select onChange={e => setPrice(e.target.value)} className="select select-bordered w-full max-w-xs">
-                       <option value={price} disabled selected>Sort by:</option>
+                    <select onChange={e => setSort(e.target.value)} className="select select-bordered w-full max-w-xs">
+                       <option value={sort} disabled selected>Sort by:</option>
                        <option value="price-low-high">Price: Low to High</option>
                        <option value="price-high-low">Price: High to Low</option>
                        <option value="date-newest">Date Added: Newest First</option>
                    </select>
+                </div>
+                <div>
+                    <button onClick={handleReset} className='btn bg-[#2B3440] text-white hover:text-black'>Reset</button>
                 </div>
             </div>
             <div className='flex justify-center flex-wrap gap-6 w-full'>
@@ -111,7 +124,7 @@ const Home = () => {
             }
             </div>
         </section>
-        <section className='flex justify-center items-center mt-16'>
+        <section className={`flex justify-center items-center mt-16`}>
            <Pagination color={"primary"} isCompact showControls 
            total={Math.ceil(totalProductsCount/itemPerPage)} 
            initialPage={1}

@@ -58,7 +58,7 @@ async function run() {
       const skip = page > 0 ? (page - 1) * limit : 0;
       
 
-      const query = {};
+      let query = {};
 
       if(search) {
         query.$or = [
@@ -73,8 +73,51 @@ async function run() {
       if(brand) {
         query.brandName = brand;
       }
+
+      if (price) {
+        if (price === "A") {
+          query.price = {
+            $gte: 0,
+            $lte: 100
+          };
+        } else if (price === "B") {
+          query.price = {
+            $gte: 101,
+            $lte: 500
+          };
+        } else if (price === "C") {
+          query.price = {
+            $gte: 501,
+            $lte: 1000
+          };
+        } else if (price === "D") {
+          query.price = {
+            $gte: 1001,
+            $lte: 2000
+          };
+        }
+      }
+
+
+      let sortQuery = {}
+
+      if (sort) {
+        switch (sort) {
+          case "price-low-high":
+            sortQuery.price = 1; 
+            break;
+          case "price-high-low":
+            sortQuery.price = -1; 
+            break;
+          case "date-newest":
+            sortQuery.date = -1; 
+            break;
+          default:
+            break;
+        }
+      }
       
-      const productsList = await products.find(query).skip(skip).limit(limit).toArray();
+      const productsList = await products.find(query).sort(sortQuery).skip(skip).limit(limit).toArray();
       res.send(productsList);
     })
 
