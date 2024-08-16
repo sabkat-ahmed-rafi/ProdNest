@@ -47,16 +47,34 @@ async function run() {
 
     app.get("/products", async (req, res) => {
       const search = req.query.search;
+
       const category = req.query.category;
       const brand = req.query.brand;
       const price = req.query.price;
+      const sort = req.query.sort;
+      
       const page = parseInt(req.query.page) || 0;
       const limit = parseInt(req.query.limit) || 10;
-
-      const skip = (page - 1) * limit
-
+      const skip = page > 0 ? (page - 1) * limit : 0;
       
-      const productsList = await products.find().skip(skip).limit(limit).toArray();
+
+      const query = {};
+
+      if(search) {
+        query.$or = [
+          { productName: { $regex: search, $options: "i" } }
+        ]
+      }
+
+      if(category) {
+        query.category = category;
+      }
+
+      if(brand) {
+        query.brandName = brand;
+      }
+      
+      const productsList = await products.find(query).skip(skip).limit(limit).toArray();
       res.send(productsList);
     })
 
